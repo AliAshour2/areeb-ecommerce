@@ -1,0 +1,23 @@
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { AuthResponse, SignUpData } from '../../shared/models/auth.model';
+import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
+import { SignUpEndPoint } from '../../shared/constants/app.constants';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class AuthService {
+  private currentUserSubject = new BehaviorSubject<any>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  constructor(private http: HttpClient) {}
+
+  signup(credentials: SignUpData): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(SignUpEndPoint, credentials);
+  }
+
+  signin(credentials: SignUpData): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(SignUpEndPoint, credentials);
+  }
+}
