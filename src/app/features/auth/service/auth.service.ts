@@ -1,8 +1,8 @@
 
 import { Injectable } from '@angular/core';
-import { AuthResponse, SignUpData } from '../../../shared/models/auth.model';
+import { AuthResponse, SignInData, SignUpData } from '../../../shared/models/auth.model';
 import { BehaviorSubject,  Observable, } from 'rxjs';
-import { SignUpEndPoint } from '../../../shared/constants/app.constants';
+import { SignInEndPoint, SignUpEndPoint } from '../../../shared/constants/app.constants';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable({
@@ -18,7 +18,7 @@ export class AuthService {
     return this.http.post<AuthResponse>(SignUpEndPoint, credentials);
   }
 
-  signin(credentials: SignUpData): Observable<AuthResponse> {
-    return this.http.post<AuthResponse>(SignUpEndPoint, credentials);
+  signin(credentials: SignInData): Observable<AuthResponse> {
+    return this.http.post<AuthResponse>(SignInEndPoint, credentials);
   }
 }

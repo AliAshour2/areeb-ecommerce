@@ -11,10 +11,13 @@ import { SignUpData } from '../../../../shared/models/auth.model';
 import { Router } from '@angular/router';
 import { InputFieldComponent } from '../../../../shared/components/input-filed/input-field.component';
 import { InputType } from '../../../../shared/components/input-filed/models/input-field.model';
+import { TokenService } from '../../../../core/services/token.service';
+import { GoogleButtonComponent } from "../../../../shared/components/google-button/google-button.component";
+import { ButtonComponent } from "../../../../shared/components/button/button.component";
 
 @Component({
   selector: 'app-sign-up-form',
-  imports: [ReactiveFormsModule, InputFieldComponent],
+  imports: [ReactiveFormsModule, InputFieldComponent, GoogleButtonComponent, ButtonComponent],
   templateUrl: './sign-up-form.component.html',
   styleUrl: './sign-up-form.component.css',
   standalone: true,
@@ -23,6 +26,7 @@ export class SignUpFormComponent {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string>('');
   private router = inject(Router);
+  private tokenService = inject(TokenService)
   InputType = InputType;
   constructor(private authService: AuthService) {}
 
@@ -87,6 +91,7 @@ export class SignUpFormComponent {
     this.authService.signup(signUpData).subscribe({
       next: (reponse) => {
         this.isLoading.set(false);
+        this.tokenService.setToken(reponse.token);
         this.router.navigate(['/']);
       },
       error: (error) => {

@@ -3,7 +3,7 @@
 >
   <div class="w-full max-w-[450px]">
     <form
-      [formGroup]="signUpForm"
+      [formGroup]="signInForm"
       (ngSubmit)="onSubmit()"
       class="bg-white rounded-3xl shadow-2xl p-8 space-y-6 border border-gray-100"
     >
@@ -31,20 +31,13 @@
           <p class="text-gray-600">Join us and start your amazing journey!</p>
         </div>
         <!-- Input Fields -->
-        <div class="space-y-2 mb-sm">
-          <app-input-field
-            id="name"
-            label="Name"
-            [type]="InputType.Text"
-            placeholder="Enter Your Name"
-            [control]="signUpForm.controls.name"
-          ></app-input-field>
+        <div class="flex flex-col space-y-md mb-sm">
           <app-input-field
             id="email"
             label="Email"
             [type]="InputType.Email"
             placeholder="Enter your email"
-            [control]="signUpForm.controls.email"
+            [control]="signInForm.controls.email"
           ></app-input-field>
 
           <app-input-field
@@ -52,34 +45,18 @@
             label="Password"
             [type]="InputType.Password"
             placeholder="Enter Your password"
-            [control]="signUpForm.controls.password"
+            [control]="signInForm.controls.password"
           >
           </app-input-field>
-
-          <app-input-field
-            id="repassword"
-            label="Re-Password"
-            [type]="InputType.Password"
-            placeholder="Enter Your Password Again"
-            [control]="signUpForm.controls.rePassword"
-          >
-          </app-input-field>
-
-          <app-input-field
-            id="phone"
-            label="Phone"
-            [type]="InputType.Tel"
-            placeholder="Enter your phone number"
-            [control]="signUpForm.controls.phone"
-          ></app-input-field>
         </div>
 
         <!-- Submit Button -->
         <app-button
-        type="submit"
-        label="Sign Up"
-        [loading]="isLoading()"
-        [disabled]="!signUpForm.valid || isLoading()"
+          type="submit"
+          label="Sign In"
+          [loading]="isLoading()"
+          [disabled]="!signInForm.valid || isLoading()"
+          class="mt-sm"
         ></app-button>
 
         <!-- Divider -->
@@ -95,16 +72,17 @@
         </div>
 
         <!-- Google Sign In -->
-        <app-google-button [label]="'Sign up with Google'"></app-google-button>
+        <app-google-button [label]="'Sign in with Google'"></app-google-button>
+
         <!-- Sign In Link -->
         <div class="text-center mt-8 pt-6 border-t border-gray-100">
           <p class="text-gray-600">
-            Already have an account?
+            Don't have Account
             <a
               href="/signin"
               class="text-blue-600 hover:text-blue-700 font-semibold ml-1 transition-colors duration-200 hover:underline"
             >
-              Sign in here
+              Sign up here
             </a>
           </p>
         </div>

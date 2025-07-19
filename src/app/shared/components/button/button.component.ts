@@ -1,0 +1,14 @@
+import { Component, input } from '@angular/core';
+
+@Component({
+  selector: 'app-button',
+  imports: [],
+  templateUrl: './button.component.html',
+  styleUrl: './button.component.css'
+})
+export class ButtonComponent {
+  type = input<'button' | 'submit'>('button');
+  label = input<string>('');
+  loading = input<boolean>(false);
+  disabled = input<boolean>(false);
+}

@@ -17,3 +17,8 @@ export interface SignUpData {
   rePassword: string
   phone: string
 }
+
+export interface SignInData{
+  email:string  
+  password : string
+}
