@@ -1,8 +1,9 @@
-import { HttpClient } from '@angular/common/http';
+
 import { Injectable } from '@angular/core';
-import { AuthResponse, SignUpData } from '../../shared/models/auth.model';
-import { BehaviorSubject, catchError, Observable, tap, throwError } from 'rxjs';
-import { SignUpEndPoint } from '../../shared/constants/app.constants';
+import { AuthResponse, SignUpData } from '../../../shared/models/auth.model';
+import { BehaviorSubject,  Observable, } from 'rxjs';
+import { SignUpEndPoint } from '../../../shared/constants/app.constants';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
