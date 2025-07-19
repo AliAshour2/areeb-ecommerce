@@ -5,7 +5,7 @@ import { SignInFormComponent } from "./features/auth/components/sign-in-form/sig
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, SignUpFormComponent, SignInFormComponent],
+  imports: [RouterOutlet,SignInFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

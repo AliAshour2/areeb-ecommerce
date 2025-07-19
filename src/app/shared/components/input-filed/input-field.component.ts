@@ -1,4 +1,4 @@
-import { Component, effect, input, signal } from '@angular/core';
+import { Component, input, signal } from '@angular/core';
 
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { InputType } from './models/input-field.model';
