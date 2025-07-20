@@ -1,3 +1,7 @@
+@if (toast().message) {
+    <app-toast [message]="toast().message" [type]="toast().type ?? 'success'"></app-toast>
+  }
+
 <div class="flex h-screen max-w-[1480px] m-auto">
   <!-- SideBar -->
   <app-sidebar></app-sidebar>
