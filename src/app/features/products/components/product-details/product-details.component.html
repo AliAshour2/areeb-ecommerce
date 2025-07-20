@@ -1,0 +1,83 @@
+<div class="space-y-6">
+  <!-- Product Image -->
+  <div class="flex justify-center">
+    <img
+      [src]="product()?.imageCover || product()?.images"
+      [alt]="product()?.title"
+      class="h-64 w-64 object-contain rounded-lg shadow-md"
+    />
+  </div>
+
+  <!-- Product Info -->
+  <div class="space-y-4">
+    <h2 class="text-xl font-bold text-gray-900">
+      {{ product()?.title ?? "" | truncate : 20 }}
+    </h2>
+
+    <div class="flex items-center justify-between ">
+      <div class="flex flex-col">
+        @if (product()?.priceAfterDiscount) {
+        <span class="text-3xl font-bold text-green-600">{{
+          product()?.priceAfterDiscount| currency : "$"
+        }}</span>
+        <span class="text-gray-400 line-through text-lg">{{
+          product()?.price | currency : "$"
+        }}</span>
+        } @else {
+        <span class="text-3xl font-bold text-green-600">{{
+          product()?.price | currency : "$"
+        }}</span>
+        }
+      </div>
+      <span
+        class=" px-3 py-1 bg-blue-100 text-blue-800 text-sm font-medium rounded-full"
+      >
+       {{ product()?.category?.name }}
+      </span>
+    </div>
+
+    <div class="space-y-2">
+      <h3 class="text-lg font-semibold text-gray-900">Description</h3>
+      <p class="text-gray-600 leading-relaxed">{{ product()?.description }}</p>
+    </div>
+  </div>
+
+  <!-- ⭐ Rating -->
+  <div
+    class="flex justify-center sm:justify-start items-center gap-1 text-yellow-500"
+  >
+    @for (star of [1, 2, 3, 4, 5]; track star) { @if (star <=
+    ((product()?.ratingsAverage || 0) | roundedRating)) {
+    <svg class="h-5 w-5 fill-current" viewBox="0 0 20 20">
+      <path
+        d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.564-.954L10 0l2.949 5.956 6.564.954-4.757 4.635 1.122 6.545z"
+      />
+    </svg>
+    } @else {
+    <svg class="h-5 w-5 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+      <path
+        d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.564-.954L10 0l2.949 5.956 6.564.954-4.757 4.635 1.122 6.545z"
+      />
+    </svg>
+    } }
+    <span class="text-sm text-gray-500 ml-2"
+      >({{ product()?.ratingsQuantity || 0 }} reviews)</span
+    >
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="flex gap-3 pt-4">
+    <!-- <button 
+        (click)="addToCart()"
+        class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-6 rounded-lg transition-colors"
+      >
+        Add to Cart
+      </button> -->
+    <button
+      (click)="closeModal.emit()"
+      class="px-6 py-3 border border-gray-300 text-gray-700 font-medium rounded-lg hover:bg-gray-50 transition-colors"
+    >
+      Close
+    </button>
+  </div>
+</div>

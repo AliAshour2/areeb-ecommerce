@@ -1,5 +1,6 @@
 <div appHover
   class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col h-full cursor-pointer group border border-gray-100"
+  (click)="openProductModal()"
  >
   <!-- 🖼️ Product Image -->
   <div class="relative mb-4">
@@ -55,7 +56,7 @@
           </span>
         }
       </div>
-      <span class="text-xs text-gray-400 capitalize">{{ p.category }}</span>
+      <span class="text-xs text-gray-400 capitalize">{{ p.category.name }}</span>
     }
   </div>
 
@@ -64,3 +65,16 @@
     <button (click)="goToDetails($event)" class="bg-gray-200 mt-4  py-sm px-md rounded text-sm hover:bg-gray-300">Details</button> -->
   </div>
 </div>
+
+
+<!-- Product Detail Modal -->
+<app-modal
+  [showClose]="true"
+  [isOpen]="isModalOpen()"
+  (close)="closeModal()"
+>
+  <app-product-details
+   [product]="product()"
+    (closeModal)="closeModal()"
+  ></app-product-details>
+</app-modal>

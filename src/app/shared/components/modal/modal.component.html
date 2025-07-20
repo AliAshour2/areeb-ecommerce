@@ -1,0 +1,22 @@
+@if(isOpen()) {
+<div class="fixed inset-0 bg-black/50 backdrop-blur-sm flex justify-center items-center z-50">
+    <div class="bg-white rounded-xl shadow-2xl w-[90%] max-h-[90vh] overflow-y-auto animate-in slide-in-from-top-2 duration-300"
+        appClickOutside
+        (clickOutside)="closeOnOverlayClick() && close.emit()">
+        @if(showClose()) {
+        <div class="flex justify-between items-center p-6 border-b border-gray-200">
+            @if(showClose()) {
+            <button
+                class="text-gray-500 hover:text-gray-700 hover:bg-gray-100 p-1 rounded transition-colors duration-200 text-2xl"
+                (click)="close.emit()">
+                ×
+            </button>
+            }
+        </div>
+        }
+        <div class="p-6">
+            <ng-content></ng-content>
+        </div>
+    </div>
+</div>
+}
