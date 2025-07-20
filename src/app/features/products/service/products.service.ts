@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { map, Observable } from 'rxjs';
 import {Products } from '../../../shared/models/prodcuts.model';
 import { RouteApiResponse } from '../../../shared/models/api.model';
-import { GetAllProductsEndPoint } from '../../../shared/constants/app.constants';
+import { GetAllProductsEndPoint, GetSpecificProduct } from '../../../shared/constants/app.constants';
 
 
 @Injectable({
@@ -18,6 +18,12 @@ export class ProductsService {
   getAllProducts(): Observable<Products[]> {
     return this.http.get<RouteApiResponse<Products[]>>(GetAllProductsEndPoint)
       .pipe(map((response: RouteApiResponse<Products[]>) => response.data.flat()));
+  }
+
+
+  getSpecificProduct(id: string): Observable<Products> {
+    return this.http.get<{ data: Products }>(GetSpecificProduct(id))
+      .pipe(map(response => response.data));
   }
 
 }

@@ -1,4 +1,4 @@
-import { Component, input, signal } from '@angular/core';
+import { Component, inject, input, signal } from '@angular/core';
 import { Products } from '../../../../shared/models/prodcuts.model';
 import { TruncatePipe } from '../../../../shared/pipes/truncate-pipe/truncate.pipe';
 import { CommonModule, CurrencyPipe } from '@angular/common';
@@ -6,6 +6,7 @@ import { RoundedRatingPipe } from '../../../../shared/pipes/rounded-rating/round
 import { HoverDirective } from '../../../../shared/directives/hover/hover.directive';
 import { ModalComponent } from "../../../../shared/components/modal/modal.component";
 import { ProductDetailsComponent } from "../product-details/product-details.component";
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -19,10 +20,22 @@ export class ProductCardComponent {
   product = input<Products>();
   isModalOpen = signal<boolean>(false);
 
+  router = inject(Router);
+
   openProductModal() {
     this.isModalOpen.set(true);
   }
   closeModal() {
     this.isModalOpen.set(false);
+  }
+
+
+  goToDetails(event?: Event) {
+    if (event) {
+      event.stopPropagation();
+    }
+    if (this.product()) {
+      this.router.navigate(['/products', this.product()!.id]);
+    }
   }
 }
