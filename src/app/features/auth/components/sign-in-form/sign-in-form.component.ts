@@ -1,6 +1,6 @@
 import { Component, inject, signal } from '@angular/core';
 import { InputType } from '../../../../shared/components/input-filed/models/input-field.model';
-import { TokenService } from '../../../../core/services/token.service';
+import { TokenService } from '../../../../core/services/token/token.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -8,6 +8,7 @@ import { SignInData } from '../../../../shared/models/auth.model';
 import { InputFieldComponent } from "../../../../shared/components/input-filed/input-field.component";
 import { GoogleButtonComponent } from "../../../../shared/components/google-button/google-button.component";
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
+import { ToastService } from '../../../../core/services/toast/toast.service';
 
 @Component({
   selector: 'app-sign-in-form',
@@ -22,7 +23,6 @@ export class SignInFormComponent {
   private tokenService = inject(TokenService);
   InputType = InputType;
   constructor(private authService: AuthService) { }
-
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -35,7 +35,7 @@ export class SignInFormComponent {
   });
 
 
-
+ 
   onSubmit() {
     if (this.signInForm.invalid) {
       return;
@@ -45,10 +45,8 @@ export class SignInFormComponent {
     this.errorMessage.set('');
 
     const signInData: SignInData = {
-
       email: this.signInForm.value.email ?? '',
       password: this.signInForm.value.password ?? '',
-
     };
 
     this.authService.signin(signInData).subscribe({

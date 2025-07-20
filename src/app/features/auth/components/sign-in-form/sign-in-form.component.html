@@ -53,9 +53,9 @@
         <!-- Submit Button -->
         <app-button
           type="submit"
-          label="Sign In"
-          [loading]="isLoading()"
+          label="Sign In"     
           [disabled]="!signInForm.valid || isLoading()"
+          [loading]="isLoading()"
           class="mt-sm"
         ></app-button>
 

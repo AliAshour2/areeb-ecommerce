@@ -11,7 +11,7 @@ import { SignUpData } from '../../../../shared/models/auth.model';
 import { Router } from '@angular/router';
 import { InputFieldComponent } from '../../../../shared/components/input-filed/input-field.component';
 import { InputType } from '../../../../shared/components/input-filed/models/input-field.model';
-import { TokenService } from '../../../../core/services/token.service';
+import { TokenService } from '../../../../core/services/token/token.service';
 import { GoogleButtonComponent } from "../../../../shared/components/google-button/google-button.component";
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
 
