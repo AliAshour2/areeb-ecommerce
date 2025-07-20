@@ -20,6 +20,7 @@ export class SignInFormComponent {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string>('');
   private router = inject(Router);
+  private toast = inject(ToastService);
   private tokenService = inject(TokenService);
   InputType = InputType;
   constructor(private authService: AuthService) { }
@@ -53,10 +54,12 @@ export class SignInFormComponent {
       next: (reponse) => {
         this.isLoading.set(false);
         this.tokenService.setToken(reponse.token);
+        this.toast.showSuccess("Sign in success");
         this.router.navigate(['/']);
       },
       error: (error) => {
         this.isLoading.set(false);
+        this.toast.showError("Sign in failed try again")
         this.errorMessage.set(
           error.error?.message || 'Signup failed. Please try again.'
         );

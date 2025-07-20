@@ -14,6 +14,7 @@ import { InputType } from '../../../../shared/components/input-filed/models/inpu
 import { TokenService } from '../../../../core/services/token/token.service';
 import { GoogleButtonComponent } from "../../../../shared/components/google-button/google-button.component";
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
+import { ToastService } from '../../../../core/services/toast/toast.service';
 
 @Component({
   selector: 'app-sign-up-form',
@@ -26,7 +27,8 @@ export class SignUpFormComponent {
   isLoading = signal<boolean>(false);
   errorMessage = signal<string>('');
   private router = inject(Router);
-  private tokenService = inject(TokenService)
+  private tokenService = inject(TokenService);
+  toast = inject(ToastService);
   InputType = InputType;
   constructor(private authService: AuthService) {}
 
@@ -92,13 +94,16 @@ export class SignUpFormComponent {
       next: (reponse) => {
         this.isLoading.set(false);
         this.tokenService.setToken(reponse.token);
+        this.toast.showSuccess("Sign up success");
         this.router.navigate(['/']);
       },
       error: (error) => {
         this.isLoading.set(false);
+        this.toast.showError(error.error?.message);
         this.errorMessage.set(
           error.error?.message || 'Signup failed. Please try again.'
         );
+        
       },
     });
   }
