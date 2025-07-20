@@ -21,4 +21,6 @@ export class AuthService {
   signin(credentials: SignInData): Observable<AuthResponse> {
     return this.http.post<AuthResponse>(SignInEndPoint, credentials);
   }
+
+  
 }
