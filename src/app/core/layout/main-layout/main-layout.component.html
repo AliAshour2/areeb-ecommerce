@@ -1,14 +1,12 @@
-<div class="flex h-screen container m-auto">
-    
+<div class="flex h-screen max-w-[1480px] m-auto">
+  <!-- SideBar -->
+  <app-sidebar></app-sidebar>
 
-
-    <!-- Main Content Area -->
-    <div class="flex flex-1 flex-col">
-        <app-header>
-
-        </app-header>
-        <main class="flex-1 overflow-y-auto">
-            <router-outlet></router-outlet>
-        </main>
-    </div>
+  <!-- Main Content Area -->
+  <div class="flex flex-1 flex-col">
+    <app-header> </app-header>
+    <main class="flex-1 overflow-y-auto">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
 </div>
