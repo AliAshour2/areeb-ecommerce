@@ -32,6 +32,8 @@ export interface Root {
     priceAfterDiscount?: number
     availableColors?: any[]
   }
+
+  
   
   export interface Subcategory {
     _id: string

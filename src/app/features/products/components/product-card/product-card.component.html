@@ -1,0 +1,66 @@
+<div appHover
+  class="bg-white rounded-2xl shadow-lg hover:shadow-xl transition-shadow duration-300 p-4 flex flex-col h-full cursor-pointer group border border-gray-100"
+ >
+  <!-- 🖼️ Product Image -->
+  <div class="relative mb-4">
+    @if (product(); as p) {
+      <img [src]="p.images[0] || p.imageCover " [alt]="p.title"
+        class="h-40 mx-auto object-contain transition-transform duration-300 group-hover:scale-105" />
+    }
+  </div>
+
+  <!-- �� Product Title -->
+  <h2 class="font-semibold text-base lg:text-lg mb-1 line-clamp-2">
+    {{ product()?.title ?? '' | truncate:40 }}
+  </h2>
+
+  <!-- 🧾 Description -->
+  <p class="text-gray-500 text-sm mb-2 line-clamp-2">
+    {{ product()?.description ?? '' | truncate:60 }}
+  </p>
+
+  <!-- ⭐ Rating -->
+  <div class="flex items-center gap-1 text-yellow-500 text-sm mb-3">
+    @for (star of [1, 2, 3, 4, 5]; track star) {
+      @if (star <= ((product()?.ratingsAverage || 0) | roundedRating)) { 
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 fill-current"
+      viewBox="0 0 20 20">
+      <path
+        d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.564-.954L10 0l2.949 5.956 6.564.954-4.757 4.635 1.122 6.545z" />
+      </svg>
+      } @else {
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-300" viewBox="0 0 20 20" fill="currentColor">
+        <path
+          d="M10 15l-5.878 3.09 1.122-6.545L.487 6.91l6.564-.954L10 0l2.949 5.956 6.564.954-4.757 4.635 1.122 6.545z" />
+      </svg>
+      }
+      }
+      <span class="ml-1 text-xs text-gray-500">({{ product()?.ratingsQuantity || product()?.ratingsAverage || 0 }})</span>
+  </div>
+
+  <!-- 💵 Price + 🏷️ Category -->
+  <div class="flex items-center justify-between mt-auto">
+    @if (product(); as p) {
+      <div class="flex flex-col">
+        @if (p.priceAfterDiscount && p.priceAfterDiscount < p.price) {
+          <span class="text-green-600 font-bold text-sm lg:text-base">
+            {{ p.priceAfterDiscount | currency:'$' }}
+          </span>
+          <span class="text-gray-400 line-through text-xs">
+            {{ p.price | currency:'$' }}
+          </span>
+        } @else {
+          <span class="text-green-600 font-bold text-sm lg:text-base">
+            {{ p.price | currency:'$' }}
+          </span>
+        }
+      </div>
+      <span class="text-xs text-gray-400 capitalize">{{ p.category }}</span>
+    }
+  </div>
+
+  <div class="flex gap-x-2 ">
+    <!-- <app-add-to-cart-button class="w-full" (addToCard)="addToCart()"></app-add-to-cart-button>
+    <button (click)="goToDetails($event)" class="bg-gray-200 mt-4  py-sm px-md rounded text-sm hover:bg-gray-300">Details</button> -->
+  </div>
+</div>
