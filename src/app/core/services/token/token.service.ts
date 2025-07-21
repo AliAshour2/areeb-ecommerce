@@ -1,3 +1,4 @@
+import { HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -20,5 +21,12 @@ export class TokenService {
 
   isAuthenticated(): boolean {
     return !!this.getToken();
+  }
+
+  getAuthHeaders(): HttpHeaders {
+    const token = this.getToken();
+    return new HttpHeaders({
+      'token': `${token}`,
+    });
   }
 }

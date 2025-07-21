@@ -60,9 +60,9 @@
     }
   </div>
 
-  <div class="flex gap-x-2 ">
-    <!-- <app-add-to-cart-button class="w-full" (addToCard)="addToCart()"></app-add-to-cart-button> -->
-    <button (click)="goToDetails($event)" class="bg-gray-200 mt-4  py-sm px-md rounded text-sm hover:bg-gray-300">Details</button>
+  <div class="flex gap-x-2 mt-4 ">
+     <app-button class="w-full" (clicked)="addToCart($event)" [label]="'Add To Cart'"></app-button>
+    <button (click)="goToDetails($event)" class="bg-gray-200   py-sm px-md rounded text-sm hover:bg-gray-300">Details</button>
   </div>
 </div>
 
