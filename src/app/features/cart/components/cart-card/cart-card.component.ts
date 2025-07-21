@@ -1,9 +1,8 @@
-import { Component, inject, input } from '@angular/core';
+import { Component,  input, output } from '@angular/core';
 import { CartProduct } from '../../../../shared/models/cart.model';
 import { RoundedRatingPipe } from '../../../../shared/pipes/rounded-rating/rounded-rating.pipe';
 import { CommonModule } from '@angular/common';
-import { CartService } from '../../service/cart.service';
-import { ToastService } from '../../../../core/services/toast/toast.service';
+
 
 @Component({
   selector: 'app-cart-card',
@@ -15,32 +14,15 @@ import { ToastService } from '../../../../core/services/toast/toast.service';
 export class CartCardComponent {
   product = input<CartProduct>();
 
-  private cartService = inject(CartService);
-  private toast = inject(ToastService);
-
-  removeItem(productId: string) {
-    this.toast.showLoading("Remove item from the cart")
-    this.cartService.RemoveSpecificCartItem(productId).subscribe({
-      next: (response) => { 
-        this.toast.showSuccess("Item removed from cart")
-       },
-      error: (error)=>{
-        this.toast.showError("Try removing item again")
-      }
-    });
-  }
+  onQuantityUpdated = output<{ productId: string, newCount: number }>();
+  onRemoved =  output<{productId: string}>();
 
   updateQuantity(productId: string, newCount: number) {
-    this.toast.showLoading("Updateing item quantity")
-    this.cartService.updateCartProductQuantity(productId, newCount).subscribe({
-      next: (response) => {
-        this.toast.showSuccess("Item quantity updated");
-      },
-      error: (err) => {
-        this.toast.showError("Try updated item quantity again");
-      }
-    });
+    this.onQuantityUpdated.emit({productId, newCount});
   }
 
+  removeItem(productId: string) {
+    this.onRemoved.emit({productId});
+  }
 
 }
