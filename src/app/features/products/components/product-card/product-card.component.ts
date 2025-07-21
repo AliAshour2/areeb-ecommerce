@@ -49,35 +49,16 @@ export class ProductCardComponent {
 
   addToCart(event?: Event) {
     event?.stopPropagation();
+    this.toast.showLoading("Adding Product To Cart");
     if (this.product()) {
-      // 1. Add product to cart (first time or not)
       this.cartServices.addProductToCart(this.product()!._id).subscribe({
-        next: (cart: any) => {
-          // 2. Find the product in the returned cart
-          const cartItem = cart.data.products.find(
-            (item: any) => item.product._id === this.product()!._id
-          );
-          if (cartItem) {
-            // 3. Update the count (increment by 1)
-            this.cartServices.updateCartProductQuantity(
-              this.product()!._id,
-              cartItem.count + 1
-            ).subscribe({
-              next: () => this.toast.showSuccess("Product quantity updated in cart"),
-              error: (error) => {
-                this.toast.showError("Failed to update product quantity");
-                console.error(error);
-              }
-            });
-          } else {
-            this.toast.showError("Product not found in cart after add");
-          }
+        next: (reponse) => {
+          this.toast.showSuccess("Product added to cart");
         },
         error: (error) => {
-          this.toast.showError("Failed to add product to cart");
-          console.error(error);
+          this.toast.showError("Try adding the product to cart agaim")
         }
-      });
+      })
     }
   }
 }

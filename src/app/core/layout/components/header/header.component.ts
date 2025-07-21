@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { AuthService } from '../../../../features/auth/service/auth.service';
 import { TokenService } from '../../../services/token/token.service';
 import { RouterModule } from '@angular/router';
+import { CartService } from '../../../../features/cart/service/cart.service';
 
 @Component({
   selector: 'app-header',
@@ -12,7 +13,7 @@ import { RouterModule } from '@angular/router';
 })
 export class HeaderComponent {
   constructor( private tokenServices : TokenService){}
-
+   
   get isAuthenticated(){
     return this.tokenServices.isAuthenticated();
   }
