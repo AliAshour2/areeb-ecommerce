@@ -16,4 +16,9 @@ export const routes: Routes = [
         loadComponent : ()=> import('./features/cart/pages/cart-page/cart-page.component').then(m=>m.CartPageComponent),
 
     }
+    ,{
+        path : 'otp',
+        loadComponent : ()=> import('./features/otp/pages/otp/otp.component').then(m=>m.OtpComponent),
+    }
+    
 ];

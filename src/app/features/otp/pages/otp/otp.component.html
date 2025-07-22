@@ -1,0 +1,125 @@
+<div class="w-full mx-auto max-w-[400px]">
+  <!-- Back Button -->
+  <div class="mb-8">
+    <button
+      class="flex items-center text-gray-600 hover:text-gray-800 transition-colors"
+    >
+      <svg
+        class="w-4 h-4 mr-2"
+        fill="none"
+        stroke="currentColor"
+        viewBox="0 0 24 24"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          stroke-width="2"
+          d="M15 19l-7-7 7-7"
+        ></path>
+      </svg>
+      Back
+    </button>
+  </div>
+
+  <!-- Main Card -->
+  <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+    <!-- Header -->
+    <div class="p-6 text-center border-b border-gray-100">
+      <div
+        class="mx-auto mb-4 w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center"
+      >
+        <svg
+          class="w-6 h-6 text-blue-600"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+          ></path>
+        </svg>
+      </div>
+      <h1 class="text-2xl font-bold text-gray-900 mb-2">
+        Enter verification code
+      </h1>
+      <p class="text-gray-600">
+        We've sent a 6-digit verification code to your email address. Please
+        enter it below to continue.
+      </p>
+    </div>
+
+    <!-- Content -->
+    <div class="p-6 space-y-6">
+      <!-- Timer -->
+      <div class="flex justify-center">
+        <div class="relative">
+          <div class="flex items-center justify-center">
+            @if(timerActive()){
+            <span id="timer-text" class="text-sm font-semibold text-red-500">{{
+              timeLeft()
+            }}</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <!-- OTP Inputs -->
+      <form [formGroup]="otpForm">
+        <div formArrayName="otp" class="flex justify-center gap-3">
+          @for (control of otpArray.controls; track $index) {
+            <input
+              type="number"
+              maxlength="1"
+              inputmode="numeric"
+              autocomplete="off"
+              pattern="[0-9]"
+              [formControlName]="$index"
+              [id]="'otp-' + $index"
+              [ngClass]="{
+                'border-red-400 bg-danger-50': control.invalid && control.touched,
+                'border-gray-300 hover:border-gray-400': !(control.invalid && control.touched),
+                'border-info-500 bg-info-50': control.valid && control.value
+              }"
+              class=" w-12 h-12 text-center text-lg font-semibold border-2 border-gray-200 rounded-lg transition-all duration-200 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 filled:border-blue-500 filled:bg-blue-50"
+            />
+          }
+        </div>
+      </form>
+      
+
+      <!-- Submit Button -->
+      <button
+        id="verify-btn"
+        [disabled]="otpForm.invalid"
+        (click)="verifyOtp()"
+        class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg font-medium disabled:bg-gray-300 disabled:cursor-not-allowed hover:bg-blue-700 transition-colors"
+      >
+        Verify Code
+      </button>
+
+      <!-- Resend Section -->
+      <div class="text-center space-y-2">
+        <p class="text-sm text-gray-500">Didn't receive the code?</p>
+        <button
+          id="resend-btn"
+          [disabled]="!canResend()"
+          (click)="resendOtp()"
+          class="text-blue-600 hover:text-blue-700 text-sm font-medium disabled:text-gray-400 disabled:cursor-not-allowed"
+        >
+          Resend verification code
+        </button>
+      </div>
+
+      <!-- Expiry Notice -->
+      <div class="text-center">
+        <p class="text-xs text-gray-400">
+          The verification code will expire in
+          <span id="expiry-time">30 seconds</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>
