@@ -93,4 +93,33 @@ export class OtpComponent {
     const firstInput = document.getElementById('otp-0') as HTMLInputElement;
     if (firstInput) firstInput.focus();
   }
+
+  onOtpKeydown(event: KeyboardEvent, index: number) {
+    const input = event.target as HTMLInputElement;
+  
+    // Move to next input on space or digit
+    if (
+      (event.key === ' ' || /^[0-9]$/.test(event.key)) &&
+      index < this.otpArray.length - 1
+    ) {
+      setTimeout(() => {
+        const nextInput = document.getElementById(`otp-${index + 1}`) as HTMLInputElement;
+        if (nextInput) nextInput.focus();
+      }, 0);
+    }
+  
+    // Backspace logic
+    if (event.key === 'Backspace') {
+      if (input.value === '') {
+        // Move to previous input if exists
+        if (index > 0) {
+          setTimeout(() => {
+            const prevInput = document.getElementById(`otp-${index - 1}`) as HTMLInputElement;
+            if (prevInput) prevInput.focus();
+          }, 0);
+        }
+      }
+      // If not empty, let default backspace clear the value
+    }
+  }
 }
