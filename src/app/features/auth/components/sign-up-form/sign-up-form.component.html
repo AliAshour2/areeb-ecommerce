@@ -72,14 +72,20 @@
             placeholder="Enter your phone number"
             [control]="signUpForm.controls.phone"
           ></app-input-field>
+
+          <ngx-material-intl-tel-input
+            [required]="false"
+            [autoIpLookup]="false"
+          >
+          </ngx-material-intl-tel-input>
         </div>
 
         <!-- Submit Button -->
         <app-button
-        type="submit"
-        label="Sign Up"
-        [loading]="isLoading()"
-        [disabled]="!signUpForm.valid || isLoading()"
+          type="submit"
+          label="Sign Up"
+          [loading]="isLoading()"
+          [disabled]="!signUpForm.valid || isLoading()"
         ></app-button>
 
         <!-- Divider -->

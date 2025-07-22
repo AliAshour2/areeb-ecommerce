@@ -15,10 +15,10 @@ import { TokenService } from '../../../../core/services/token/token.service';
 import { GoogleButtonComponent } from "../../../../shared/components/google-button/google-button.component";
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
 import { ToastService } from '../../../../core/services/toast/toast.service';
-
+import { NgxMaterialIntlTelInputComponent } from 'ngx-material-intl-tel-input';
 @Component({
   selector: 'app-sign-up-form',
-  imports: [ReactiveFormsModule, InputFieldComponent, GoogleButtonComponent, ButtonComponent],
+  imports: [NgxMaterialIntlTelInputComponent,ReactiveFormsModule, InputFieldComponent, GoogleButtonComponent, ButtonComponent],
   templateUrl: './sign-up-form.component.html',
   styleUrl: './sign-up-form.component.css',
   standalone: true,
@@ -80,7 +80,9 @@ export class SignUpFormComponent {
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set('');
+    this.errorMessage.set('');  
+
+ 
 
     const signUpData: SignUpData = {
       name: this.signUpForm.value.name ?? '',
