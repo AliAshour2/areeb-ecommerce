@@ -19,6 +19,9 @@ export class CartPageComponent {
 
   private toast = inject(ToastService);
 
+ 
+
+
   constructor(private cartService: CartService) {
     this.loadCart();
   }
@@ -72,4 +75,6 @@ export class CartPageComponent {
       },
     });
   }
+
+  
 }
