@@ -7,7 +7,7 @@ import { ModalComponent } from "../../../../shared/components/modal/modal.compon
 
 @Component({
   selector: 'app-product-details',
-  imports: [TruncatePipe, CurrencyPipe, CommonModule, RoundedRatingPipe, ModalComponent],
+  imports: [TruncatePipe, CurrencyPipe, CommonModule, RoundedRatingPipe],
   templateUrl: './product-details.component.html',
   styleUrl: './product-details.component.css'
 })
