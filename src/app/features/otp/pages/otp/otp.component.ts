@@ -55,6 +55,8 @@ export class OtpComponent {
         clearInterval(timer);
         this.timerActive.set(false);
         this.canResend.set(true);
+        this.otpForm.reset();
+
       }
     }, 500);
   };
@@ -62,7 +64,6 @@ export class OtpComponent {
   // Verify OTP
   verifyOtp() {
     if (!this.canResend()) return;
-
     const otp = this.otp();
     console.log(otp);
   }
