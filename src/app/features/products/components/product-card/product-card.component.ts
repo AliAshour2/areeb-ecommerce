@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 import { CartService } from '../../../cart/service/cart.service';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 import { ButtonComponent } from "../../../../shared/components/button/button.component";
+import { TokenService } from '../../../../core/services/token/token.service';
 
 
 @Component({
@@ -22,12 +23,12 @@ import { ButtonComponent } from "../../../../shared/components/button/button.com
 export class ProductCardComponent {
   product = input<Products>();
   isModalOpen = signal<boolean>(false);
+  showLoginModal = signal<boolean>(false);
 
   cartServices = inject(CartService);
-  toast = inject(ToastService);
-
-
-  router = inject(Router);
+  private toast = inject(ToastService);
+  private tokenService = inject(TokenService);
+  private router = inject(Router);
 
   openProductModal() {
     this.isModalOpen.set(true);
@@ -35,6 +36,7 @@ export class ProductCardComponent {
   closeModal() {
     this.isModalOpen.set(false);
   }
+
 
 
   goToDetails(event?: Event) {
@@ -46,9 +48,19 @@ export class ProductCardComponent {
     }
   }
 
+  goToSignIn() {
+    this.router.navigate(['/sign-in-page']);
+    this.showLoginModal.set(false);
+  }
+
 
   addToCart(event?: Event) {
     event?.stopPropagation();
+    if(!this.tokenService.isAuthenticated()){
+      this.toast.showError("Need To LogIn");
+      this.showLoginModal.set(true);
+      return ;
+    }
     this.toast.showLoading("Adding Product To Cart");
     if (this.product()) {
       this.cartServices.addProductToCart(this.product()!._id).subscribe({
