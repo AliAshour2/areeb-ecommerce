@@ -19,7 +19,9 @@
       <div class="flex items-center gap-4">
         <div class="w-20 h-4 bg-gray-200 rounded"></div>
         <div class="flex gap-1">
-          <div class="h-3 w-3 bg-gray-200 rounded-full" *ngFor="let i of [1,2,3,4,5]"></div>
+          @for (item of [1,2,3,4,5]; track $index) {
+            <div class="h-3 w-3 bg-gray-200 rounded-full" ></div>
+          }
         </div>
       </div>
 
