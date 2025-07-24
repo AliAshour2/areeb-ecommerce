@@ -25,7 +25,6 @@ import { NgxMaterialIntlTelInputComponent } from 'ngx-material-intl-tel-input';
 })
 export class SignUpFormComponent {
   isLoading = signal<boolean>(false);
-  errorMessage = signal<string>('');
   private router = inject(Router);
   private tokenService = inject(TokenService);
   toast = inject(ToastService);
@@ -79,10 +78,8 @@ export class SignUpFormComponent {
       return;
     }
 
-    this.isLoading.set(true);
-    this.errorMessage.set('');  
-
- 
+    this.isLoading.set(true);  
+    this.toast.showLoading();
 
     const signUpData: SignUpData = {
       name: this.signUpForm.value.name ?? '',
@@ -101,11 +98,6 @@ export class SignUpFormComponent {
       },
       error: (error) => {
         this.isLoading.set(false);
-        this.toast.showError(error.error?.message);
-        this.errorMessage.set(
-          error.error?.message || 'Signup failed. Please try again.'
-        );
-        
       },
     });
   }

@@ -3,27 +3,36 @@ import { InputType } from '../../../../shared/components/input-filed/models/inpu
 import { TokenService } from '../../../../core/services/token/token.service';
 import { Router } from '@angular/router';
 import { AuthService } from '../../service/auth.service';
-import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  ReactiveFormsModule,
+  Validators,
+} from '@angular/forms';
 import { SignInData } from '../../../../shared/models/auth.model';
-import { InputFieldComponent } from "../../../../shared/components/input-filed/input-field.component";
-import { GoogleButtonComponent } from "../../../../shared/components/google-button/google-button.component";
-import { ButtonComponent } from "../../../../shared/components/button/button.component";
+import { InputFieldComponent } from '../../../../shared/components/input-filed/input-field.component';
+import { GoogleButtonComponent } from '../../../../shared/components/google-button/google-button.component';
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { ToastService } from '../../../../core/services/toast/toast.service';
 
 @Component({
   selector: 'app-sign-in-form',
-  imports: [InputFieldComponent, ReactiveFormsModule, GoogleButtonComponent, ButtonComponent],
+  imports: [
+    InputFieldComponent,
+    ReactiveFormsModule,
+    GoogleButtonComponent,
+    ButtonComponent,
+  ],
   templateUrl: './sign-in-form.component.html',
   styleUrl: './sign-in-form.component.css',
 })
 export class SignInFormComponent {
   isLoading = signal<boolean>(false);
-  errorMessage = signal<string>('');
   private router = inject(Router);
   private toast = inject(ToastService);
   private tokenService = inject(TokenService);
   InputType = InputType;
-  constructor(private authService: AuthService) { }
+  constructor(private authService: AuthService) {}
   signInForm = new FormGroup({
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [
@@ -35,15 +44,13 @@ export class SignInFormComponent {
     ]),
   });
 
-
- 
   onSubmit() {
     if (this.signInForm.invalid) {
       return;
     }
 
     this.isLoading.set(true);
-    this.errorMessage.set('');
+    this.toast.showLoading();
 
     const signInData: SignInData = {
       email: this.signInForm.value.email ?? '',
@@ -54,17 +61,12 @@ export class SignInFormComponent {
       next: (reponse) => {
         this.isLoading.set(false);
         this.tokenService.setToken(reponse.token);
-        this.toast.showSuccess("Sign in success");
+        this.toast.showSuccess('Sign in success');
         this.router.navigate(['/']);
       },
       error: (error) => {
         this.isLoading.set(false);
-        this.toast.showError("Sign in failed try again")
-        this.errorMessage.set(
-          error.error?.message || 'Signup failed. Please try again.'
-        );
       },
     });
   }
-
 }
