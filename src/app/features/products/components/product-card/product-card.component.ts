@@ -1,21 +1,30 @@
-import { Component, inject, input, signal } from '@angular/core';
+import { Component, inject, input, signal, computed, output } from '@angular/core';
 import { Products } from '../../../../shared/models/prodcuts.model';
 import { TruncatePipe } from '../../../../shared/pipes/truncate-pipe/truncate.pipe';
 import { CommonModule, CurrencyPipe } from '@angular/common';
 import { RoundedRatingPipe } from '../../../../shared/pipes/rounded-rating/rounded-rating.pipe';
 import { HoverDirective } from '../../../../shared/directives/hover/hover.directive';
-import { ModalComponent } from "../../../../shared/components/modal/modal.component";
-import { ProductDetailsComponent } from "../product-details/product-details.component";
+import { ModalComponent } from '../../../../shared/components/modal/modal.component';
+import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { Router } from '@angular/router';
 import { CartService } from '../../../cart/service/cart.service';
 import { ToastService } from '../../../../core/services/toast/toast.service';
-import { ButtonComponent } from "../../../../shared/components/button/button.component";
+import { ButtonComponent } from '../../../../shared/components/button/button.component';
 import { TokenService } from '../../../../core/services/token/token.service';
-
+import { WishlistService } from '../../../wishlist/services/wishlist.service';
 
 @Component({
   selector: 'app-product-card',
-  imports: [TruncatePipe, CurrencyPipe, CommonModule, RoundedRatingPipe, HoverDirective, ModalComponent, ProductDetailsComponent, ButtonComponent],
+  imports: [
+    TruncatePipe,
+    CurrencyPipe,
+    CommonModule,
+    RoundedRatingPipe,
+    HoverDirective,
+    ModalComponent,
+    ProductDetailsComponent,
+    ButtonComponent,
+  ],
   templateUrl: './product-card.component.html',
   styleUrl: './product-card.component.css',
   standalone: true,
@@ -24,8 +33,10 @@ export class ProductCardComponent {
   product = input<Products>();
   isModalOpen = signal<boolean>(false);
   showLoginModal = signal<boolean>(false);
+  onRemoved = output<{ productId: string }>();
 
   cartServices = inject(CartService);
+  wishlistServices = inject(WishlistService);
   private toast = inject(ToastService);
   private tokenService = inject(TokenService);
   private router = inject(Router);
@@ -36,8 +47,6 @@ export class ProductCardComponent {
   closeModal() {
     this.isModalOpen.set(false);
   }
-
-
 
   goToDetails(event?: Event) {
     if (event) {
@@ -53,24 +62,43 @@ export class ProductCardComponent {
     this.showLoginModal.set(false);
   }
 
-
   addToCart(event?: Event) {
     event?.stopPropagation();
-    if(!this.tokenService.isAuthenticated()){
-      this.toast.showError("Need To LogIn");
+    if (!this.tokenService.isAuthenticated()) {
+      this.toast.showError('Need To LogIn');
       this.showLoginModal.set(true);
-      return ;
+      return;
     }
-    this.toast.showLoading("Adding Product To Cart");
+    this.toast.showLoading('Adding Product To Cart');
     if (this.product()) {
       this.cartServices.addProductToCart(this.product()!._id).subscribe({
         next: (reponse) => {
-          this.toast.showSuccess("Product added to cart");
+          this.toast.showSuccess('Product added to cart');
         },
         error: (error) => {
-          this.toast.showError("Try adding the product to cart agaim")
-        }
-      })
+          this.toast.showError('Try adding the product to cart agaim');
+        },
+      });
     }
   }
+
+  
+  isInWishlist = computed(() => {
+    const p = this.product();
+    return p ? this.wishlistServices.isInWishlist(p.id) : false;
+  });
+
+  toggleWishlist(event?: Event) {
+    event?.stopPropagation();
+    if (!this.tokenService.isAuthenticated()) {
+      this.toast.showError('Need To LogIn');
+      this.showLoginModal.set(true);
+      return;
+    }
+    if (this.product()) {
+      this.wishlistServices.toggleWishlist(this.product()!);
+    }
+  }
+
+ 
 }

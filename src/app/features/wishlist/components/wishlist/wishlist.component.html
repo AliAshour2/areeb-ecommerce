@@ -1,0 +1,22 @@
+<div class="container mx-auto px-4 py-8">
+    <h1 class="text-2xl font-bold mb-6">My Wishlist</h1>
+    @if (error()) {
+      <div class="text-red-600 mb-4">{{ error() }}</div>
+    }
+    @if (isLoading()) {
+      <div>Loading...</div>
+    } @else {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
+        @for (product of wishlist(); track product.id) {
+          <app-product-card
+            [product]="product"
+            (onRemoved)="removeItemFromWishList($event.productId)"
+          ></app-product-card>
+        } @empty {
+          <div class="col-span-full text-center text-gray-500 py-12">
+            No products in your wishlist.
+          </div>
+        }
+      </div>
+    }
+  </div>

@@ -38,6 +38,10 @@ export class ProductsPageComponent {
     })
   }
 
+  
+
+
+
   retryLoadProducts(): void {
     this.loadProducts();
   }
