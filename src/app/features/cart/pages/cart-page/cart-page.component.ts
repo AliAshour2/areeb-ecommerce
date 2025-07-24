@@ -2,12 +2,13 @@ import { Component, inject, signal } from '@angular/core';
 import { CartService } from '../../service/cart.service';
 import { CartProduct } from '../../../../shared/models/cart.model';
 import { CartCardComponent } from '../../components/cart-card/cart-card.component';
-import { CardSkeletonComponent } from '../../../../shared/components/skeletons/card-skeleton/card-skeleton.component';
 import { ToastService } from '../../../../core/services/toast/toast.service';
+import { CartCardSkeletonComponent } from "../../../../shared/components/skeletons/cart-card-skeleton/cart-card-skeleton.component";
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cart-page',
-  imports: [CartCardComponent, CardSkeletonComponent],
+  imports: [CartCardComponent, CartCardSkeletonComponent,RouterModule],
   templateUrl: './cart-page.component.html',
   styleUrl: './cart-page.component.css',
   standalone: true,
@@ -16,7 +17,6 @@ export class CartPageComponent {
   cartItemsList = signal<CartProduct[]>([]);
   isLoading = signal<boolean>(true);
   error = signal<string | null>(null);
-
   private toast = inject(ToastService);
 
  
@@ -57,6 +57,16 @@ export class CartPageComponent {
         this.toast.showError('Try removing item again');
       },
     });
+  }
+
+  removeCartItem(){
+    this.toast.showLoading("Removing user cart");
+    this.cartService.clearUserCart().subscribe({
+      next:()=>{
+        this.cartItemsList.set([]);
+        this.toast.showSuccess("Cart Removed");
+      },
+    })
   }
 
   updateQuantity(productId: string, newCount: number) {
