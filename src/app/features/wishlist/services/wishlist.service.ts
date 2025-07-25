@@ -20,9 +20,7 @@ export class WishlistService {
 
   wishlist = signal<WishListProducts[]>([]);
 
-  /**
-   * Loads the wishlist from the backend and updates the signal.
-   */
+  
   loadWishlist() {
     this.getWishList().subscribe({
       next: (res) => this.wishlist.set(res.data),
@@ -30,16 +28,11 @@ export class WishlistService {
     });
   }
 
-  /**
-   * Checks if a product is in the wishlist by id.
-   */
   isInWishlist(productId: string): boolean {
     return this.wishlist().some(item => item.id === productId);
   }
 
-  /**
-   * Toggles the wishlist status for a product and updates the signal.
-   */
+  
   toggleWishlist(product: Products) {
     if (this.isInWishlist(product.id)) {
       this.delteProductFromWishList(product.id).subscribe({

@@ -1,4 +1,4 @@
-import { Component, inject, input, signal, computed, output } from '@angular/core';
+import { Component, inject, input, signal, output } from '@angular/core';
 import { Products } from '../../../../shared/models/prodcuts.model';
 import { TruncatePipe } from '../../../../shared/pipes/truncate-pipe/truncate.pipe';
 import { CommonModule, CurrencyPipe } from '@angular/common';
@@ -7,11 +7,7 @@ import { HoverDirective } from '../../../../shared/directives/hover/hover.direct
 import { ModalComponent } from '../../../../shared/components/modal/modal.component';
 import { ProductDetailsComponent } from '../product-details/product-details.component';
 import { Router } from '@angular/router';
-import { CartService } from '../../../cart/service/cart.service';
-import { ToastService } from '../../../../core/services/toast/toast.service';
 import { ButtonComponent } from '../../../../shared/components/button/button.component';
-import { TokenService } from '../../../../core/services/token/token.service';
-import { WishlistService } from '../../../wishlist/services/wishlist.service';
 
 @Component({
   selector: 'app-product-card',
@@ -33,12 +29,10 @@ export class ProductCardComponent {
   product = input<Products>();
   isModalOpen = signal<boolean>(false);
   showLoginModal = signal<boolean>(false);
+  addToCart = output<{ productId: string }>();
+  toggleWishlist = output<{ productId: string }>();
   onRemoved = output<{ productId: string }>();
-
-  cartServices = inject(CartService);
-  wishlistServices = inject(WishlistService);
-  private toast = inject(ToastService);
-  private tokenService = inject(TokenService);
+  isInWishlist = input<boolean>(false);
   private router = inject(Router);
 
   openProductModal() {
@@ -62,43 +56,17 @@ export class ProductCardComponent {
     this.showLoginModal.set(false);
   }
 
-  addToCart(event?: Event) {
+  onAddToCart(event?: Event) {
     event?.stopPropagation();
-    if (!this.tokenService.isAuthenticated()) {
-      this.toast.showError('Need To LogIn');
-      this.showLoginModal.set(true);
-      return;
-    }
-    this.toast.showLoading('Adding Product To Cart');
     if (this.product()) {
-      this.cartServices.addProductToCart(this.product()!._id).subscribe({
-        next: (reponse) => {
-          this.toast.showSuccess('Product added to cart');
-        },
-        error: (error) => {
-          this.toast.showError('Try adding the product to cart agaim');
-        },
-      });
+      this.addToCart.emit({ productId: this.product()!.id });
     }
   }
 
-  
-  isInWishlist = computed(() => {
-    const p = this.product();
-    return p ? this.wishlistServices.isInWishlist(p.id) : false;
-  });
-
-  toggleWishlist(event?: Event) {
+  onToggleWishlist(event?: Event) {
     event?.stopPropagation();
-    if (!this.tokenService.isAuthenticated()) {
-      this.toast.showError('Need To LogIn');
-      this.showLoginModal.set(true);
-      return;
-    }
     if (this.product()) {
-      this.wishlistServices.toggleWishlist(this.product()!);
+      this.toggleWishlist.emit({ productId: this.product()!.id });
     }
   }
-
- 
 }
